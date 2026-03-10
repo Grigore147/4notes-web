@@ -1,12 +1,36 @@
 import { publicRoute } from '@/app/routes/public.routes';
 import { rootRoute } from '@/app/routes/root.route';
+import { createRoute } from '@tanstack/react-router';
 import { protectedRoute } from './routes/protected.routes';
-import { demoRoute } from './routes/protected/demo.routes';
-import { homeRoute } from './routes/protected/home.routes';
-import { noteRoute } from './routes/protected/notes.routes';
-import { loginRoute } from './routes/public/login.route';
+
+import HomePage from '@/pages/HomePage';
+import LoginPage from '@/pages/LoginPage';
+import NotesPage from '@/pages/NotesPage';
 
 export const routeTree = rootRoute.addChildren([
-    publicRoute.addChildren([loginRoute]),
-    protectedRoute.addChildren([homeRoute, noteRoute, demoRoute])
+    publicRoute.addChildren([
+        createRoute({
+            getParentRoute: () => publicRoute,
+            path: '/auth/login',
+            component: LoginPage
+        })
+    ]),
+    protectedRoute.addChildren([
+        createRoute({
+            getParentRoute: () => protectedRoute,
+            path: '/',
+            // component: lazyRouteComponent(() => import('@/app/pages/HomePage'))
+            component: HomePage
+        }),
+        createRoute({
+            getParentRoute: () => protectedRoute,
+            path: '/notes',
+            component: NotesPage
+        }),
+        createRoute({
+            getParentRoute: () => protectedRoute,
+            path: '/demo',
+            component: HomePage
+        })
+    ])
 ]);

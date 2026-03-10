@@ -1,4 +1,4 @@
-import { NotFoundPage } from '@/app/pages/NotFoundPage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
 import { createRootRoute } from '@tanstack/react-router';
 import { RootLayout } from '../RootLayout';
 

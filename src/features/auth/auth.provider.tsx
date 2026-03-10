@@ -1,10 +1,16 @@
-export const AUTH_BOOTSTRAP_TTL = 60 * 1000; // 1 minute
-export const LAST_AUTH_BOOTSTRAP_KEY = 'auth:last-bootstrap';
+import { initAuthSession } from '@/features/auth/auth.service';
+import { useAuthStore } from '@/stores/auth.store';
+import type React from 'react';
+import { useEffect } from 'react';
 
-export const BROADCAST_CHANNEL = '4notes-auth';
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
+    const user = useAuthStore((state) => state.user);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-    // useAuthBootstrap();
+    useEffect(() => {
+        if (!user) {
+            initAuthSession();
+        }
+    }, [user]);
 
     return <>{children}</>;
 }

@@ -6,9 +6,9 @@ export const protectedRoute = createRoute({
     id: 'protected',
     getParentRoute: () => rootRoute,
     beforeLoad: async () => {
-        const { isAuthenticated } = useAuthStore.getState();
+        const user = useAuthStore.getState().user;
 
-        if (!isAuthenticated) {
+        if (!user) {
             throw redirect({ to: '/auth/login' });
         }
     }
